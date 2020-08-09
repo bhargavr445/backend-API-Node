@@ -11,6 +11,10 @@ const Student = mongoose.model('Student', {
     // timestamps: { createdAt: 'created_at' }
     // createdOn: {type: Date}
 
-});
+}
+// , {
+//     timestamps: true
+// }
+);
 
 module.exports = Student;
