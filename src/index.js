@@ -2,11 +2,11 @@ const express = require('express')
 require('./db/mongoose');
 const User = require('./models/user');
 const studentRoute = require('./routes/student');
-
+const cors = require('cors');
 const app = express()
 const port = process.env.PORT || 3000
 
-
+app.use(cors());
 app.use(express.json());
 app.use(studentRoute);
 
