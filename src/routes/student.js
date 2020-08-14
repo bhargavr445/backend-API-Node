@@ -39,8 +39,9 @@ router.post('/api/student', (req, res) => {
     //console.log(student);
     student.save().then((resp)=> {
         let resp1 = new Student();
-        // console.log(resp);
-        return res.status(200).send({data:resp1.data.studentId, status: 1});
+        //console.log(resp1);
+        resp1 = resp;
+        return res.status(200).send({data:resp1.studentId, status: 1});
     }).catch((error)=> {
         // console.log(error);
         res.status(500).send({erroe: error.message, status: 0});
