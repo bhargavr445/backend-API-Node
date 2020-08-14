@@ -40,7 +40,7 @@ router.post('/api/student', (req, res) => {
     student.save().then((resp)=> {
         let resp1 = new Student();
         // console.log(resp);
-        return res.status(200).send({data:resp1.studentId, status: 1});
+        return res.status(200).send({data:resp1.data.studentId, status: 1});
     }).catch((error)=> {
         // console.log(error);
         res.status(500).send({erroe: error.message, status: 0});
