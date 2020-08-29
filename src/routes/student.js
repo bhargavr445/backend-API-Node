@@ -59,4 +59,13 @@ router.put('/api/student', (req, res)=> {
     });
 });
 
+router.delete('/api/student/:id', (req, res) => {
+    const id = req.params.id;
+    Student.deleteOne({ studentId: { $in: id } }).then(resp => {
+        return res.status(200).send({ data: resp, status: 1 });
+    }).catch(err => {
+        return res.status(500).send({ data: err, status: 0 });
+    })
+})
+
 module.exports = router;
