@@ -8,30 +8,24 @@ const userSchema = new mongoose.Schema({
     // permissions: {type: [], required: true, trim: true},
     role: {type: String, required: true, trim: true},
     tokens: [{
-        token: {type: String, required: true}
+        token: {type: String}
     }]
 });
 
 userSchema.statics.findByCredentials = async (userName, password) => {
-    // console.log(1);
     const user = await User.findOne({userName});
-    // console.log('3',user);
     if(!user) {
-         throw new Error('Not able to login from findByCredMethods');
+        // return res.status(500).send({data: 'Not able to login from findByCredMethods', status: 0});
+         // throw new Error('Not able to login from findByCredMethods');
+         return 
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if(!isMatch) {
-        throw new Error('Not able to login from findByCredMethods2');
+        // throw new Error('Not able to login from findByCredMethods2');
+        return 
     }
-    // console.log(user);
     return user;
 }
-// userSchema.methods.generateAuthToken = async function () {
-//     const user = this;
-//     console.log("@@@@@",user);
-//     return "myToken"
-// };
-// this will call just before save method executes.
 userSchema.pre('save', async function(next) {
     const user = this;
     // to check if password is modified or not, this isModified method is provided by mongoose
@@ -42,7 +36,6 @@ userSchema.pre('save', async function(next) {
     next();
 })
 
-// export const User = mongoose.model('User', userSchema);
 const User = mongoose.model('User', userSchema);
 module.exports =   User;
 

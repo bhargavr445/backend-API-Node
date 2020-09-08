@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const router = new express.Router();
 const User = require('../models/user');
@@ -9,47 +7,50 @@ const auth = require('../middleware/auth');
 router.post('/api/signup', async (req, res) => {
     const user = new User(req.body);
     try {
-        await user.save();
-        res.status(200).send(user);
+        const savedUser = await user.save();
+        const token = jwt.sign({ _id: savedUser._id.toString() }, 'generatevalidtokenforauth');
+        user.tokens = user.tokens.concat({ token });
+        const u = await user.save();
+        return res.status(200).send({ data: { u, token }, status: 1 });
     } catch (e) {
-        res.status(200).send(e);
+        return res.status(500).send({ data: "Please sign-up again", status: 0 });
     }
 });
 
-router.post('/api/login' ,async (req, res) => {
+router.post('/api/login', async (req, res) => {
     const { userName, password } = req.body;
-    const user = await User.findByCredentials(userName, password);
-   // console.log("@@@@@@@@@@@@@@@@@@@@@@@",user);
-    const token = jwt.sign({ _id:user._id.toString()}, 'generatevalidtokenforauth');
-    //console.log(token);
-    user.tokens = user.tokens.concat({token});
-    // user.tokens = [ ...user.tokens, token]
-    const u = await user.save();
-// console.log(user);
-    //await user.save()
-    if(!token) {
-        throw new Error('Token creation failed');
+    try {
+        const user = await User.findByCredentials(userName, password);
+        const token = jwt.sign({ _id: user._id.toString() }, 'generatevalidtokenforauth');
+        user.tokens = user.tokens.concat({ token });
+        const u = await user.save();
+        return res.status(200).send({ data: { u, token }, status: 1 });
+    } catch (e) {
+        return res.status(500).send({ data: "Please provide valid credentials", status: 0 });
     }
-    return res.status(200).send({u, token});
 });
-
 
 router.get('/api/logout', auth, async (req, res) => {
-    // console.log(req.user);
-    console.log(req.token);
-    console.log(req.user);
     try {
         req.user.tokens = req.user.tokens.filter(token => {
-            console.log("@@@@@",token.token);
             if (req.token !== token.token) {
                 return true;
             }
         });
-        console.log(req.user);
         await req.user.save();
-        res.status(200).send('loggedout sucessfully');
+        return res.status(200).send({ data: 'loggedout sucessfully', status: 1 });
     } catch (e) {
-        throw new Error('Unable to logout');
+        return res.status(500).send({ data: "Unable to logout", status: 0 });
+    }
+});
+
+router.get('/api/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = [];
+        await req.user.save();
+        return res.status(200).send({ data: 'loggedout from ALL devices sucessfully', status: 1 });
+    } catch (e) {
+        return res.status(500).send({ data: "Unable to logout from All devices", status: 0 });
     }
 });
 
