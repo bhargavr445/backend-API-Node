@@ -11,7 +11,10 @@ router.post('/api/signup', async (req, res) => {
         const token = jwt.sign({ _id: savedUser._id.toString() }, 'generatevalidtokenforauth');
         user.tokens = user.tokens.concat({ token });
         const u = await user.save();
-        return res.status(200).send({ data: { u, token }, status: 1 });
+        let formattedUser = {userName: '', role:''};
+        formattedUser.userName = u.userName;
+        formattedUser.role = u.role;
+        return res.status(200).send({ data: { formattedUser, token }, status: 1 });
     } catch (e) {
         return res.status(500).send({ data: "Please sign-up again", status: 0 });
     }
@@ -24,7 +27,10 @@ router.post('/api/login', async (req, res) => {
         const token = jwt.sign({ _id: user._id.toString() }, 'generatevalidtokenforauth');
         user.tokens = user.tokens.concat({ token });
         const u = await user.save();
-        return res.status(200).send({ data: { u, token }, status: 1 });
+        let formattedUser = {userName: '', role:''};
+        formattedUser.userName = u.userName;
+        formattedUser.role = u.role;
+        return res.status(200).send({ data: { formattedUser, token }, status: 1 });
     } catch (e) {
         return res.status(500).send({ data: "Please provide valid credentials", status: 0 });
     }

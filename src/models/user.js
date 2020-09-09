@@ -11,6 +11,20 @@ const userSchema = new mongoose.Schema({
         token: {type: String}
     }]
 });
+// this will remove the 
+// userSchema.methods.toJSON = async function() {
+//     const user = this
+//     const userObject = user.toObject();
+//     delete userObject.password
+//     delete userObject.tokens
+//     return userObject;
+// }
+userSchema.methods.generateToken = async function() {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString() }, 'generatevalidtokenforauth');
+    user.tokens = user.tokens.concat({ token });
+    return token;
+}
 
 userSchema.statics.findByCredentials = async (userName, password) => {
     const user = await User.findOne({userName});
