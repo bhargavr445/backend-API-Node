@@ -17,7 +17,7 @@ router.get('/api/student/:id', auth, (req, res) => {
 });
 
 //this is return all students
-router.get('/api/student', auth, (req, res) => {
+router.get('/api/student', (req, res) => {
     Student.find({}).then((result) => {
         return res.status(200).send({ data: result, status: 1 });
     }).catch((err) => {

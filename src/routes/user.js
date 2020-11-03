@@ -14,7 +14,7 @@ router.post('/api/signup', async (req, res) => {
         let formattedUser = {userName: '', role:''};
         formattedUser.userName = u.userName;
         formattedUser.role = u.role;
-        return res.status(200).send({ data: { formattedUser, token }, status: 1 });
+        return res.status(200).send({ data: { user:formattedUser, token }, status: 1 });
     } catch (e) {
         return res.status(500).send({ data: "Please sign-up again", status: 0 });
     }
@@ -30,7 +30,7 @@ router.post('/api/login', async (req, res) => {
         let formattedUser = {userName: '', role:''};
         formattedUser.userName = u.userName;
         formattedUser.role = u.role;
-        return res.status(200).send({ data: { formattedUser, token }, status: 1 });
+        return res.status(200).send({ data: { user:formattedUser, token }, status: 1 });
     } catch (e) {
         return res.status(500).send({ data: "Please provide valid credentials", status: 0 });
     }
