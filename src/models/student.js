@@ -10,6 +10,7 @@ const Student = mongoose.model('Student', {
     country: { type: String },
     // timestamps: { createdAt: 'created_at' }
     // createdOn: {type: Date}
+    //test
 
 }
 // , {
