@@ -3,6 +3,7 @@ require('./db/mongoose');
 const User = require('./models/user');
 const studentRoute = require('./routes/student');
 const userRoute = require('./routes/user');
+const customerRoute = require('./routes/customer');
 const CompletedCoursesRoute = require('./routes/completedCourse');
 const cors = require('cors');
 const app = express()
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(studentRoute);
 app.use(CompletedCoursesRoute);
 app.use(userRoute);
+app.use(customerRoute);
 
 
 

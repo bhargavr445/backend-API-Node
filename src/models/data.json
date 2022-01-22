@@ -1,0 +1,24 @@
+{
+    "customerId": "cust127",
+    "customerName": "Bhargav",
+    "products": [
+        {
+            "productId": "xbox89",
+            "productName": "Xbox",
+            "productAvailableCountrys": [
+                "India",
+                "USA",
+                "CANADA"
+            ]
+        },
+        {
+            "productId": "xbox89",
+            "productName": "Xbox",
+            "productAvailableCountrys": [
+                "India",
+                "USA",
+                "CANADA"
+            ]
+        }
+    ]
+}
