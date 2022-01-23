@@ -10,6 +10,7 @@ const Customer = mongoose.model('Customer', {
                 productId: { type: String },
                 productName: { type: String },
                 productAvailableCountrys: { type: [String] }
+                
             }
         ]
     }

@@ -9,7 +9,7 @@ const Student = mongoose.model('Student', {
     year: { type: Number },
     country: { type: String },
     // timestamps: { createdAt: 'created_at' }
-    // createdOn: {type: Date}
+    createdOn: {type: Date, default: Date.now },
 
 }
 // , {

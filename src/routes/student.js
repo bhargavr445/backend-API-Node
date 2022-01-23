@@ -48,8 +48,11 @@ router.post('/api/student', auth, (req, res) => {
 
 router.put('/api/student', auth, (req, res) => {
     const stu = new Student(req.body);
-    Student.findByIdAndUpdate(stu.studentId, stu).then(resp => {
-        return res.status(200).send({ data: resp, status: 1 });
+    Student.findByIdAndUpdate(stu._id, stu).then(resp => {
+        console.log(resp);
+        let resp1 = new Student();
+        resp1 = resp;
+        return res.status(200).send({ data: 'Updated Sucessfully', status: 1 });
     }).catch((err) => {
         return res.status(500).send({ data: err, status: 0 });
     });
@@ -62,6 +65,6 @@ router.delete('/api/student/:id', auth, (req, res) => {
     }).catch(err => {
         return res.status(500).send({ data: err, status: 0 });
     })
-})
+});
 
 module.exports = router;
