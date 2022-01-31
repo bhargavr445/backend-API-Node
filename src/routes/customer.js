@@ -17,7 +17,7 @@ router.get('/api/customer', (req, res) => {
     Customer.find({}).then((result) => {
         return res.status(200).send({ data: result, status: 1 });
     }).catch((err) => {
-        return res.status(400).json({ error: error, status: 0 })
+        return res.status(400).json({ error: error, status: 0 });
     });
 });
 
@@ -32,11 +32,13 @@ router.get('/api/customer/:id', (req, res) => {
 
 router.put('/api/customer', (req, res) => {
     const customer = new Customer(req.body);
-    // console.log(customer);
+    console.log(customer);
     Customer.findByIdAndUpdate(customer._id, customer).then((resp) => {
-        console.log(resp);
-        return res.status(200).send({ data: `${resp.customerId} has been updated sucessfully`, status: 1 });
+        let resp1 = new Customer();
+        resp1 = resp;
+        return res.status(200).send({ data: `${resp1.customerId} has been updated sucessfully`, status: 1 });
     }).catch((err) => {
+        console.log(err);
         return res.status(500).send({ data: err, status: 0 });
     });
 });

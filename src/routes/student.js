@@ -48,11 +48,17 @@ router.post('/api/student', auth, (req, res) => {
 
 router.put('/api/student', auth, (req, res) => {
     const stu = new Student(req.body);
+    console.log('1111111',stu);
     Student.findByIdAndUpdate(stu._id, stu).then(resp => {
-        console.log(resp);
+        console.log('22222',resp);
         let resp1 = new Student();
         resp1 = resp;
-        return res.status(200).send({ data: 'Updated Sucessfully', status: 1 });
+        if(resp1) {
+            return res.status(200).send({ data: 'Updated Sucessfully', status: 1 });
+        } else {
+            return res.status(200).send({ data: 'Updated Failed Please snd new obj', status: 1 });
+
+        }
     }).catch((err) => {
         return res.status(500).send({ data: err, status: 0 });
     });
