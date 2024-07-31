@@ -6,7 +6,7 @@ const CompletedCourses = mongoose.model('CompletedCourses', {
     studentId: { type: String },
     course: { type: String },
     completedYear: { type: Number },
-    term: {type: String},
+    term: { type: String },
 }
 );
 

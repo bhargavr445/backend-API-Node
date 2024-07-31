@@ -4,8 +4,6 @@ const Student = require('../models/student');
 const auth = require('../middleware/auth');
 
 
-
-
 // this is to get student based on ID.
 router.get('/api/student/:id', auth, (req, res) => {
     const id = req.params.id;
@@ -21,12 +19,13 @@ router.get('/api/student', (req, res) => {
     Student.find({}).then((result) => {
         return res.status(200).send({ data: result, status: 1 });
     }).catch((err) => {
-        return res.status(400).json({ error: error, status: 0 })
+        return res.status(400).json({ error: err, status: 0 })
     });
 });
 
 //this will return all ids.
 router.get('/api/getAllIds', auth, (req, res) => {
+    Student.
     Student.distinct('studentId').then((result) => {
         return res.status(200).json({ data: result, status: 1 });
     }).catch((error) => {
@@ -56,8 +55,7 @@ router.put('/api/student', auth, (req, res) => {
         if(resp1) {
             return res.status(200).send({ data: 'Updated Sucessfully', status: 1 });
         } else {
-            return res.status(200).send({ data: 'Updated Failed Please snd new obj', status: 1 });
-
+            return res.status(200).send({ data: 'Updated Failed Please snd new obj', status: 1 })
         }
     }).catch((err) => {
         return res.status(500).send({ data: err, status: 0 });
