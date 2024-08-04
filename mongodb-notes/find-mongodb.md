@@ -1,3 +1,7 @@
+db.getCollection("movies").find({[FILTER]}, {[PROJECTION-results-will-contains-only-with-props-that-we-mentioned-here]})
+db.getCollection("movies").find({rating: {$gt: 6}}, {name:1, geners:1, _id:0})
+
+
 db.getCollection("movies").find({
     $or: [
         {"runtime": {$lt: 60}},
@@ -91,7 +95,7 @@ db.getCollection("boxoffice").find({
              "sports"
         ]
 }
-# $all will give all the matching records, order doesnt match when we use $all
+# $all will give all the matching records, order doesnt matter when we use $all
 We cannot apply $all on array of objects, it should be only with array of strings and numbers. 
 
 # $elementMatch 
