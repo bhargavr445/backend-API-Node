@@ -3,11 +3,13 @@ const router = new express.Router();
 const auth = require('../middleware/auth');
 const UniversitiesDB = require('../models/universitiesM');
 
-router.get('/api/universities/:alphaTwoCode', (req, res) => {
-    const {alphaTwoCode} = req.params;
-    UniversitiesDB.find(alphaTwoCode ? {country:alphaTwoCode} : {})
+router.get('/api/universities', (req, res) => {
+    const {alphaTwoCode} = req.query;
+    UniversitiesDB.find(alphaTwoCode ? {alphaTwoCode} : {})
         .then((result) => res.status(200).send({ data: result, status: 1 }))
-        .catch((error) => res.status(400).json({ error: error, status: 0 }))
+        .catch((error) => {
+            res.status(400).json({ error: error, status: 0 })
+        })
 });
 
 router.get('/api/countrys', (_, res) => {

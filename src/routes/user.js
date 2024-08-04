@@ -4,6 +4,18 @@ const User = require('../models/user');
 const jwt = require("jsonwebtoken");
 const auth = require('../middleware/auth');
 
+router.get('/api/users', auth, async (req, res) => {
+    const {user}= req;
+    if (user.role !== 'admin') {
+        return res.status(403).json({ error: 'Forbidden: Access is denied', status: 0 });
+    }
+    User.find({}, {_id:0, userName: 1, role: 1}).then(
+        (response ) => res.status(200).send({ data: response, status: 1 })
+    ).catch(
+        (error) => res.status(400).json({ error: error, status: 0 })
+    )
+})
+
 router.post('/api/signup', async (req, res) => {
     const user = new User(req.body);
     try {
