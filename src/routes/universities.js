@@ -5,12 +5,28 @@ const UniversitiesDB = require('../models/universitiesM');
 
 router.get('/api/universities', (req, res) => {
     const {alphaTwoCode} = req.query;
-    UniversitiesDB.find(alphaTwoCode ? {alphaTwoCode} : {})
+    UniversitiesDB.find(alphaTwoCode ? {alpha_two_code: alphaTwoCode} : {})
         .then((result) => res.status(200).send({ data: result, status: 1 }))
         .catch((error) => {
             res.status(400).json({ error: error, status: 0 })
         })
 });
+
+router.get('/api/info', (req, res) => {
+    UniversitiesDB.aggregate([
+        {
+            $group: { _id: { countryCode: "$alpha_two_code", }, total: { $sum: 1 }, country: { $first: "$country" } }
+        },
+        {
+            $sort: { total: -1 }
+        },
+        {
+            $project: { total: 1, countryCode: "$_id.countryCode", country: 1, _id: 0 }
+        }
+    ])
+        .then((result) => res.status(200).send({ data: result, status: 1 }))
+        .catch((error) => res.status(400).json({ error: error, status: 0 }))
+})
 
 router.get('/api/countrys', (_, res) => {
     UniversitiesDB.aggregate([
@@ -18,7 +34,7 @@ router.get('/api/countrys', (_, res) => {
             $group: {
                 _id: {
                     country: "$country",
-                    alphaTwoCode: "$alphaTwoCode"
+                    alphaTwoCode: "$alpha_two_code"
                 }
             }
         },
@@ -41,3 +57,4 @@ router.get('/api/countrys', (_, res) => {
 });
 
 module.exports = router;
+

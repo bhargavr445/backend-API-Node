@@ -3,7 +3,7 @@ const validator = require('validator');
 
 const UniversitiesDB = mongoose.model('universities', {
 
-    alphaTwoCode: { type: String },
+    alpha_two_code: { type: String },
     web_pages: { type: [String] },
     country: { type: String },
     domains: { type: [String] },
