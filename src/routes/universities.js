@@ -4,18 +4,22 @@ const auth = require('../middleware/auth');
 const UniversitiesDB = require('../models/universitiesM');
 
 router.get('/api/universities', (req, res) => {
-    const {alphaTwoCode} = req.query;
-    UniversitiesDB.find(alphaTwoCode ? {alpha_two_code: alphaTwoCode} : {})
+    const { alphaTwoCode } = req.query;
+    UniversitiesDB.find(alphaTwoCode ? { alpha_two_code: alphaTwoCode } : {})
         .then((result) => res.status(200).send({ data: result, status: 1 }))
         .catch((error) => {
-            res.status(400).json({ error: error, status: 0 })
+           return res.status(400).json({ error: error, status: 0 })
         })
 });
 
-router.get('/api/info', (req, res) => {
+router.get('/api/info', (_, res) => {
     UniversitiesDB.aggregate([
         {
-            $group: { _id: { countryCode: "$alpha_two_code", }, total: { $sum: 1 }, country: { $first: "$country" } }
+            $group: {
+                _id: { countryCode: "$alpha_two_code", },
+                total: { $sum: 1 },
+                country: { $first: "$country" }
+            }
         },
         {
             $sort: { total: -1 }

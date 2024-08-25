@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const { taskManagerConnection } = require('../db/mongoose');
 
 const userSchema = new mongoose.Schema({
     userName: {type: String, required: true, trim: true, unique: true},
     password: {type: String, required: true, trim: true},
+    email: {type: String, required: true, trim: true, unique: true},
     // permissions: {type: [], required: true, trim: true},
     role: {type: String, required: true, trim: true},
     tokens: [{
         token: {type: String}
-    }]
+    }],
+    enrolledCourses: [{ type: String, ref: 'courses' }],
+    yourCourses: [{ type: String, ref: 'courses' }]
 });
 // this will remove the 
 // userSchema.methods.toJSON = async function() {
@@ -50,7 +54,7 @@ userSchema.pre('save', async function(next) {
     next();
 })
 
-const User = mongoose.model('User', userSchema);
+const User = taskManagerConnection.model('User', userSchema);
 module.exports =   User;
 
 

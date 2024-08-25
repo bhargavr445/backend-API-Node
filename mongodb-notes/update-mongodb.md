@@ -34,6 +34,31 @@ db.getCollection("me").updateMany({}, {
 # $upsert
 will update doc like spread operator. 
 
+# pushing 1 course id into purchasedCourses array of strings by using `$push`
+db.getCollection("learners").updateMany(
+    {
+        name: "bhargav"
+    },
+    {
+        $push: {
+          "purchasedCourses": ObjectId("66b4fa6c57214c018ac191b8")  
+        }
+    }
+)
+# pushing multiple  course id's into purchasedCourses array of strings by using `$each`
+db.users.updateOne(
+  { _id: ObjectId("60c72b2f9f1b2c6d88f789f1") },
+  {
+    $push: {
+      purchasedCourses: {
+        $each: [
+          12345,
+          89108
+        ]
+      }
+    }
+  }
+);
 # updating data in array of objects. Adding new prop in matching first obj in Array
 db.getCollection("me").updateMany({
     "hobbies": {

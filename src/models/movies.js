@@ -1,7 +1,8 @@
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const validator = require('validator')
+const { taskManagerConnection } = require('../db/mongoose');
 
-const MoviesDB = mongoose.model('Movies', {
+const MoviesDB = taskManagerConnection.model('Movies', {
 
     id: { type: Number },
     url: { type: String },

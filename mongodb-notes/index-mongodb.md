@@ -5,7 +5,7 @@ mongoimport persons.json -d task-manager-api -c persons --jsonArray
 # get execution stats
 db.getCollection("persons").explain("executionStats").find({});
 
-# single row index
+# single row index 
 # compound indexes - apply index on max 31 props 
 # unique indexes
 # partial indexes 

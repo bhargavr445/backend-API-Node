@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
 const validator = require('validator')
+const { taskManagerConnection } = require('../db/mongoose');
 
-const CompletedCourses = mongoose.model('CompletedCourses', {
+const CompletedCourses = taskManagerConnection.model('CompletedCourses', {
     studentName: { type: String },
     studentId: { type: String },
     course: { type: String },

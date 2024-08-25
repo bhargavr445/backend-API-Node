@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
 const validator = require('validator')
+const { taskManagerConnection } = require('../db/mongoose');
 
-const Games = mongoose.model('Games', {
+const Games = taskManagerConnection.model('Games', {
     // "_id" : ObjectId("669c76a328075336c2c191b7"),
     id : {type: Number},
     title : {type: String},
