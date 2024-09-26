@@ -10,7 +10,10 @@ We can update multiple fields at same time.
 # $inc 
 updateOne({name: 'Bhargav'}, {$inc: {age: 1}}) ✅
 
-updateOne({name: 'Bhargav'}, {$inc: {age: 1}, $set:{age: 30}}) ❌ we cannot perform this. cannot use same prop in $inc and $set 
+updateOne({name: 'Bhargav'}, {
+    $inc: {age: 1}, 
+    $set:{age: 30}
+    }) ❌ we cannot perform this. cannot use same prop in $inc and $set 
 
 updateOne({name: 'Bhargav'}, {$inc: {age: 1}, $set:{domain: 'React'}}) ✅ 
 

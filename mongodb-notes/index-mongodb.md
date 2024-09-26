@@ -142,10 +142,3 @@ find({"address.street":  "Main Street"}) -  `Col Scan`
 
 createIndex({address.street:1})
  find({"address.street":  "Main Street"}) -  `Index Scan`  
-
-
-
-
-
-
-

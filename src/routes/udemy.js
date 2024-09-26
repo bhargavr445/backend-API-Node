@@ -9,9 +9,9 @@ const User = require('../models/user');
 
 router.post('/api/cat/types', async (req, res) => {
     try {
-        console.log(req)
+        // console.log(req)
         const payload = req.body;
-        console.log('******',payload);
+        // console.log('******',payload);
         // select * from categoryC;
         const records = await categoryC.insertMany([payload]);
         //  return records;
@@ -24,18 +24,47 @@ router.post('/api/cat/types', async (req, res) => {
 
 router.get('/api/categories', auth, (_, res) => {
     categoryC.find(
-        {}, 
+        {},
         { "_id": 0 }
     )
         .then((result) => res.status(200).send({ data: result, status: 1 }))
         .catch((error) => res.status(400).json({ error: error, status: 0 }))
 });
 
-router.get('/api/accountTypes', auth, (_, res) => {
+router.get('/api/accountTypes', (_, res) => {
     AccountTypesC.find({}, { "_id": 0, })
         .then((result) => res.status(200).send({ data: result, status: 1 }))
         .catch((error) => res.status(400).json({ error: error, status: 0 }))
 });
+
+router.get('/api/enrolledCourseCount', (_, res) => {
+
+    User.aggregate([
+        {
+          $unwind: {
+            path: "$enrolledCourses"
+          }
+        },
+        {
+          $group: {
+            _id: "$enrolledCourses",
+            count: {
+              $sum: 1
+            }
+          }
+        },
+        {
+          $sort: {
+            count: -1
+          }
+        }
+      ]).then((result) => res.status(200).send({ data: result, status: 1 }))
+      .catch((error) => res.status(400).json({ error: error, status: 0 }))
+
+});
+
+
+
 
 /**
  * Checks if course id exists, this is useful while creating course
@@ -75,7 +104,7 @@ router.post('/api/createCourse', auth, async (req, res) => {
  * Only admin can access this end point
  */
 router.get('/api/getAllCourses', (req, res) => {
-    console.log('88888888');
+    // console.log('88888888');
     udemyCreateCourseC.aggregate([
         {
             $lookup: {
@@ -140,7 +169,7 @@ router.get('/api/fetchEnrolledCourses', auth, (req, res) => {
         }
     ])
         .then((result) => {
-            console.log(result);
+            // console.log(result);
             return res.status(200).send({ data: result, status: 1 })
         })
         .catch((error) => res.status(400).json({ error: error, status: 0 }))
@@ -162,7 +191,6 @@ router.get('/api/fetchCreatedCourses', auth, async (req, res) => {
 
     try {
         const { user } = req;
-        console.log(user);
         const createdCoursesList = await User.aggregate([
             {
                 $match: {
@@ -217,7 +245,7 @@ router.post('/api/purchaseNewCourses', auth, async (req, res) => {
     try {
         const { user } = req;
         const { body } = req;
-        console.log(body);
+        // console.log(body);
         const updateNewCOurseInPurchaseList = await User.updateOne(
             { userName: user.userName },
             {
@@ -233,6 +261,79 @@ router.post('/api/purchaseNewCourses', auth, async (req, res) => {
         return res.status(400).json({ error: error, status: 0 })
     }
 })
+
+router.get('/api/unEnrolledCourses', auth, async (req, res) => {
+    try {
+        const { user } = req;
+        const updateNewCOurseInPurchaseList = await User.aggregate(
+            [
+                {
+                    $match: {
+                        userName: user.userName
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "courses",
+                        let: {
+                            enrolledAndCreatedCourses: {
+                                $concatArrays: [
+                                    {
+                                        $ifNull: ["$yourCourses", []]
+                                    },
+                                    {
+                                        $ifNull: ["$enrolledCourses", []]
+                                    }
+                                ]
+                            }
+                        },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $not: {
+                                            $in: [
+                                                "$course_id",
+                                                "$$enrolledAndCreatedCourses"
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                $project: {
+                                    _id: 0
+                                }
+                            }
+                        ],
+                        as: "unEnrolledCourses"
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        unEnrolledCourses: 1
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$unEnrolledCourses"
+                    }
+                },
+                {
+                    $replaceRoot: {
+                        newRoot: "$unEnrolledCourses"
+                    }
+                }
+            ]
+        )
+        return res.status(200).send({ data: updateNewCOurseInPurchaseList, status: 1 });
+    } catch (error) {
+        return res.status(400).json({ error: error, status: 0 })
+    }
+})
+
+
 
 
 
