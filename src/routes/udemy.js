@@ -5,8 +5,46 @@ const categoryC = require('../models/category');
 const udemyCreateCourseC = require('../models/udemy-course');
 const auth = require('../middleware/auth');
 const User = require('../models/user');
+/**
+ * @swagger
+ * tags:
+ *   name: Udemy
+ *   description: API for managing Udemy courses
+ */
 
-
+/**
+ * @swagger
+ * /api/cat/types:
+ *   post:
+ *     summary: Create a new category type
+ *     tags: [Udemy]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Programming"
+ *     responses:
+ *       200:
+ *         description: Category type created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 status:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
+ */
 router.post('/api/cat/types', async (req, res) => {
     try {
         // console.log(req)
@@ -21,16 +59,60 @@ router.post('/api/cat/types', async (req, res) => {
     }
 
 });
-
+/**
+ * @swagger
+ * /api/categories:
+ *   get:
+ *     summary: Retrieve a list of categories
+ *     tags: [Udemy]
+ *     responses:
+ *       200:
+ *         description: A list of categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 status:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
+ */
 router.get('/api/categories', auth, (_, res) => {
     categoryC.find(
         {},
-        { "_id": 0 }
+       
     )
         .then((result) => res.status(200).send({ data: result, status: 1 }))
         .catch((error) => res.status(400).json({ error: error, status: 0 }))
 });
-
+/**
+ * @swagger
+ * /api/accountTypes:
+ *   get:
+ *     summary: Retrieve a list of account types
+ *     tags: [Udemy]
+ *     responses:
+ *       200:
+ *         description: A list of account types
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 status:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
+ */
 router.get('/api/accountTypes', (_, res) => {
     AccountTypesC.find({}, { "_id": 0, })
         .then((result) => res.status(200).send({ data: result, status: 1 }))
@@ -69,6 +151,34 @@ router.get('/api/enrolledCourseCount', (_, res) => {
 /**
  * Checks if course id exists, this is useful while creating course
  */
+/**
+ * @swagger
+ * /api/checkIdExists/{id}:
+ *   get:
+ *     summary: Check if course ID exists
+ *     tags: [Udemy]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the course
+ *     responses:
+ *       200:
+ *         description: Course ID existence status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: boolean
+ *                 status:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
+ */
 router.get('/api/checkIdExists/:id', auth, (req, res) => {
     const { id } = req.params;
     udemyCreateCourseC.findOne({ course_id: id })
@@ -81,6 +191,59 @@ router.get('/api/checkIdExists/:id', auth, (req, res) => {
 
 /**
  * This is used to create course, but only the profile with instructor can only create this course.
+ */
+/**
+ * @swagger
+ * /api/createCourse:
+ *   post:
+ *     summary: Create a new course
+ *     tags: [Udemy]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - course_id
+ *               - createrId
+ *               - description
+ *               - price
+ *               - category
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: The title of the course
+ *                 example: "Learn JavaScript"
+ *               description:
+ *                 type: string
+ *                 description: The description of the course
+ *                 example: "A comprehensive course on JavaScript"
+ *               price:
+ *                 type: number
+ *                 description: The price of the course
+ *                 example: 99.99
+ *               category:
+ *                 type: string
+ *                 description: The category of the course
+ *                 example: "Programming"
+ *     responses:
+ *       200:
+ *         description: Course created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                 status:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
  */
 router.post('/api/createCourse', auth, async (req, res) => {
     try {
@@ -102,6 +265,29 @@ router.post('/api/createCourse', auth, async (req, res) => {
 
 /**
  * Only admin can access this end point
+ */
+/**
+ * @swagger
+ * /api/getAllCourses:
+ *   get:
+ *     summary: Retrieve a list of all courses
+ *     tags: [Udemy]
+ *     responses:
+ *       200:
+ *         description: A list of all courses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 status:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
  */
 router.get('/api/getAllCourses', (req, res) => {
     // console.log('88888888');
