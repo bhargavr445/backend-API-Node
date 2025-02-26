@@ -10,6 +10,7 @@ const universitiesRoute = require('./routes/universities');
 const CompletedCoursesRoute = require('./routes/completedCourse');
 const LearnersRoute = require('./routes/learners');
 const UdemyRoute = require('./routes/udemy');
+const CricketRoute = require('./routes/cricket');
 const cors = require('cors');
 const swaggerSetup = require('./swagger');
 const app = express();
@@ -33,6 +34,7 @@ app.use(MoviesRoute);
 app.use(universitiesRoute);
 app.use(LearnersRoute);
 app.use(UdemyRoute);
+app.use(CricketRoute);
 
 const getRandomNumberBetween500And1000 = () => {
     const min = 800;

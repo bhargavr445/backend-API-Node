@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "start:producer": "node src/Events/Producer/producer-index.js",
+    "start:consumer": "node src/Events/Consumer/consumer-index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +19,11 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.1.10",
     "mongoose": "^5.9.13",
+    "node-rdkafka": "^3.2.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "validator": "^10.9.0"
+    "validator": "^10.9.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
