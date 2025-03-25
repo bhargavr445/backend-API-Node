@@ -113,12 +113,21 @@ router.get('/api/categories', auth, (_, res) => {
  *       400:
  *         description: Bad request
  */
-router.get('/api/accountTypes', (_, res) => {
+router.get('/api/accountTypes', async (_, res) => {
+    try {
+        const payload = req.body;
+        const records = await AccountTypesC.insertMany([payload]);
+        return res.status(200).send({ data: records, status: 1 });
+    } catch (error){
+        return res.status(400).json({ error: error, status: 0 });
+    }
+});
+
+router.post('/api/accountTypes', (req, res) => {
     AccountTypesC.find({}, { "_id": 0, })
         .then((result) => res.status(200).send({ data: result, status: 1 }))
         .catch((error) => res.status(400).json({ error: error, status: 0 }))
 });
-
 router.get('/api/enrolledCourseCount', (_, res) => {
 
     User.aggregate([
