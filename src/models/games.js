@@ -1,7 +1,7 @@
 const validator = require('validator')
-const { taskManagerConnection } = require('../db/mongoose');
+const { localDSchemas } = require('../db/mongoose');
 
-const Games = taskManagerConnection.model('Games', {
+const Games = localDSchemas.model('Games', {
     // "_id" : ObjectId("669c76a328075336c2c191b7"),
     id : {type: Number},
     title : {type: String},

@@ -1,7 +1,7 @@
 const validator = require('validator')
-const { taskManagerConnection } = require('../db/mongoose');
+const { localDSchemas } = require('../db/mongoose');
 
-const Customer = taskManagerConnection.model('Customer', {
+const Customer = localDSchemas.model('Customer', {
     customerId: { type: String, unique: true },
     customerName: { type: String },
     products: {

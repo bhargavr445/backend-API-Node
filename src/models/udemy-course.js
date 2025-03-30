@@ -1,8 +1,8 @@
 const validator = require('validator')
-const { taskManagerConnection } = require('../db/mongoose');
+const { atlasMongoConnection } = require('../db/mongoose');
 
 
-const UdemyCourseM = taskManagerConnection.model('courses', {
+const UdemyCourseM = atlasMongoConnection.model('courses', {
 
   course_id: { type: String, required: true, trim: true, unique: true },
   createrId: {type: String, ref: 'User' },

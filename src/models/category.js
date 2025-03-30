@@ -1,8 +1,8 @@
 const validator = require('validator')
-const { taskManagerConnection } = require('../db/mongoose');
+const { atlasMongoConnection } = require('../db/mongoose');
 
 
-const categoryC = taskManagerConnection.model('category', {
+const categoryC = atlasMongoConnection.model('category', {
     
     code: {type: String, required: true, unique: true},
     type: {type: String},

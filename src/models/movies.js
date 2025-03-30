@@ -1,8 +1,8 @@
 // const mongoose = require('mongoose')
 const validator = require('validator')
-const { taskManagerConnection } = require('../db/mongoose');
+const { localDSchemas } = require('../db/mongoose');
 
-const MoviesDB = taskManagerConnection.model('Movies', {
+const MoviesDB = localDSchemas.model('Movies', {
 
     id: { type: Number },
     url: { type: String },

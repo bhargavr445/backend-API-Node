@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const { taskManagerConnection } = require('../db/mongoose');
+const { localDSchemas } = require('../db/mongoose');
 
 
-const UniversitiesDB = taskManagerConnection.model('universities', {
+const UniversitiesDB = localDSchemas.model('universities', {
 
     alpha_two_code: { type: String },
     web_pages: { type: [String] },

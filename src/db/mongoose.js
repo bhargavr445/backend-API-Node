@@ -1,12 +1,16 @@
 const mongoose = require('mongoose')
 
-const taskManagerConnection = mongoose.createConnection('mongodb://127.0.0.1:27017/task-manager-api', {
+const userName = 'bhargav';
+const password = 'Wednesday40';
+const clusterInfo = 'cluster0.xoqibqx.mongodb.net'
+
+const atlasMongoConnection = mongoose.createConnection(`mongodb+srv://${userName}:${password}@${clusterInfo}/task-manager-api`, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
 })
 
-const udemyConnection = mongoose.createConnection('mongodb://127.0.0.1:27017/Udemy', {
+const localDSchemas = mongoose.createConnection('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -14,6 +18,6 @@ const udemyConnection = mongoose.createConnection('mongodb://127.0.0.1:27017/Ude
 
 
 module.exports = {
-    taskManagerConnection,
-    udemyConnection
+    atlasMongoConnection,
+    localDSchemas
 };

@@ -1,7 +1,7 @@
 const validator = require('validator')
-const { taskManagerConnection } = require('../db/mongoose');
+const { atlasMongoConnection } = require('../db/mongoose');
 
-const CompletedCourses = taskManagerConnection.model('CompletedCourses', {
+const CompletedCourses = atlasMongoConnection.model('CompletedCourses', {
     studentName: { type: String },
     studentId: { type: String },
     course: { type: String },

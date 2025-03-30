@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { taskManagerConnection } = require('../db/mongoose');
+const { atlasMongoConnection } = require('../db/mongoose');
 
 const userSchema = new mongoose.Schema({
     userName: {type: String, required: true, trim: true, unique: true},
@@ -54,7 +54,7 @@ userSchema.pre('save', async function(next) {
     next();
 })
 
-const User = taskManagerConnection.model('User', userSchema);
+const User = atlasMongoConnection.model('User', userSchema);
 module.exports =   User;
 
 
