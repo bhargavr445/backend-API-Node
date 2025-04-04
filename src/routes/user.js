@@ -67,7 +67,6 @@ router.get('/api/logout', auth, async (req, res) => {
 });
 
 router.get('/api/logoutAll', auth, async (req, res) => {
-    console.log('hjgfjkhfkjgfkjgfkufk');
     try {
         req.user.tokens = [];
         await req.user.save();

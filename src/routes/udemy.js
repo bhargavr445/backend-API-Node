@@ -424,6 +424,11 @@ router.get('/api/fetchCreatedCourses', auth, async (req, res) => {
                 $replaceRoot: {
                     newRoot: "$createdCourses"
                 }
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
             }
         ])
         return res.status(200).send({ data: createdCoursesList, status: 1 });
