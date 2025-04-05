@@ -524,6 +524,11 @@ router.get('/api/unEnrolledCourses', auth, async (req, res) => {
                     $replaceRoot: {
                         newRoot: "$unEnrolledCourses"
                     }
+                },
+                {
+                    $sort: {
+                        createdAt: -1
+                    }
                 }
             ]
         )
